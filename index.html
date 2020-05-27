@@ -68,7 +68,7 @@
             text-align: center;
             color: rgba(255, 255, 255, 0.75);
             font-weight: bold;
-            word-break:break-all;
+            word-break: break-all;
 
             -webkit-filter: drop-shadow(0px 0px 20px rgba(0, 255, 255, 0.95));
             -moz-filter: drop-shadow(0px 0px 20px rgba(0, 255, 255, 0.95));
@@ -250,6 +250,11 @@
                 var element = document.createElement('div');
                 element.className = 'element';
                 element.style.backgroundColor = 'rgba(0,127,127,' + (Math.random() * 0.5 + 0.25) + ')';
+                element.onclick =function (name) {
+                    return function () {
+                        window.open("https://github.com/" + name, "_blank");
+                    }
+                }(item[0]);
 
                 var number = document.createElement('div');
                 number.className = 'number';
