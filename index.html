@@ -119,6 +119,7 @@
     <button id="sphere">SPHERE</button>
     <button id="helix">HELIX</button>
     <button id="grid">GRID</button>
+    <button id="play">PLAY</button>
 
     <script>
 
@@ -250,7 +251,7 @@
                 var element = document.createElement('div');
                 element.className = 'element';
                 element.style.backgroundColor = 'rgba(0,127,127,' + (Math.random() * 0.5 + 0.25) + ')';
-                element.onclick =function (name) {
+                element.onclick = function (name) {
                     return function () {
                         window.open("https://github.com/" + name, "_blank");
                     }
@@ -377,9 +378,14 @@
             controls.rotateSpeed = 0.5;
             controls.addEventListener('change', render);
 
+            var randomPlayInterval;
+
             var button = document.getElementById('table');
             button.addEventListener('click', function (event) {
 
+                if (randomPlayInterval !== undefined) {
+                    window.clearInterval(randomPlayInterval);
+                }
                 transform(targets.table, 2000);
 
             }, false);
@@ -387,6 +393,9 @@
             var button = document.getElementById('sphere');
             button.addEventListener('click', function (event) {
 
+                if (randomPlayInterval !== undefined) {
+                    window.clearInterval(randomPlayInterval);
+                }
                 transform(targets.sphere, 2000);
 
             }, false);
@@ -394,6 +403,9 @@
             var button = document.getElementById('helix');
             button.addEventListener('click', function (event) {
 
+                if (randomPlayInterval !== undefined) {
+                    window.clearInterval(randomPlayInterval);
+                }
                 transform(targets.helix, 2000);
 
             }, false);
@@ -401,7 +413,20 @@
             var button = document.getElementById('grid');
             button.addEventListener('click', function (event) {
 
+                if (randomPlayInterval !== undefined) {
+                    window.clearInterval(randomPlayInterval);
+                }
                 transform(targets.grid, 2000);
+
+            }, false);
+
+            var button = document.getElementById('play');
+            button.addEventListener('click', function (event) {
+
+                randomTransform(targets);
+                randomPlayInterval = setInterval(function () {
+                    randomTransform(targets);
+                }, 6000)
 
             }, false);
 
@@ -409,6 +434,24 @@
 
             window.addEventListener('resize', onWindowResize, false);
 
+        }
+
+        function randomTransform(targets) {
+            var targetNames = Object.keys(targets);
+            var randTarget = targets[targetNames[randomNum(0, targetNames.length - 1)]];
+            var randDuration = randomNum(3000, 5000);
+            transform(randTarget, randDuration);
+        }
+
+        function randomNum(minNum, maxNum) {
+            switch (arguments.length) {
+                case 1:
+                    return parseInt(Math.random() * minNum + 1, 10);
+                case 2:
+                    return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
+                default:
+                    return 0;
+            }
         }
 
         function transform(targets, duration) {
