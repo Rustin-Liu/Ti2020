@@ -424,6 +424,10 @@
             button.addEventListener('click', function (event) {
 
                 randomTransform(targets);
+
+                if (randomPlayInterval !== undefined) {
+                    window.clearInterval(randomPlayInterval);
+                }
                 randomPlayInterval = setInterval(function () {
                     randomTransform(targets);
                 }, 6000)
@@ -439,19 +443,14 @@
         function randomTransform(targets) {
             var targetNames = Object.keys(targets);
             var randTarget = targets[targetNames[randomNum(0, targetNames.length - 1)]];
-            var randDuration = randomNum(3000, 5000);
+            var randDuration = randomNum(3000, 4000);
             transform(randTarget, randDuration);
         }
 
         function randomNum(minNum, maxNum) {
-            switch (arguments.length) {
-                case 1:
-                    return parseInt(Math.random() * minNum + 1, 10);
-                case 2:
-                    return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
-                default:
-                    return 0;
-            }
+            var range = maxNum - minNum;
+            var rand = Math.random();
+            return minNum + Math.round(rand * range);
         }
 
         function transform(targets, duration) {
